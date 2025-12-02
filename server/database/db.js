@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-
-export const connectDB = async () => {
+import { config } from "dotenv";
+export const connectDB = () => {
   mongoose
-    .connect("mongodb://127.0.0.1:27017", {
+    .connect(process.env.MONGO_URI, {
       dbName: "SSVGI_LIB_MANAGEMENT_APP",
     })
     .then(() => {
-      console.log("Database connecting successfully.");
+      console.log("Database connected successfully.");
     })
     .catch((err) => {
       console.log("Error in Connecting to Database");

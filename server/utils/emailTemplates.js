@@ -416,7 +416,7 @@ export function generateForgotPasswordEmailTemplate(resetPasswordUrl) {
 
                 <p
                   style="
-                    margin: 20px 0 0;
+                    margin: 20px 0 0; 
                     font-size: 13px;
                     color: #666;
                     line-height: 1.5;

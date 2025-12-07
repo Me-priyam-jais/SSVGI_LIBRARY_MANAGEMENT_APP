@@ -168,3 +168,103 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler(error.message, 500));
   }
 });
+
+export const resetPassword = catchAsyncErrors(async (req, res, next) => {
+  const { token } = req.params;
+  if (!token) {
+    return next(new ErrorHandler("Reset token is required.", 400));
+  }
+
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex");
+
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(
+      new ErrorHandler("Reset token is invalid or has expired.", 400)
+    );
+  }
+
+  const { password, confirmPassword } = req.body || {};
+  if (!password || !confirmPassword) {
+    return next(
+      new ErrorHandler("Please provide password and confirmPassword.", 400)
+    );
+  }
+
+  if (password !== confirmPassword) {
+    return next(
+      new ErrorHandler("Password & confirm password do not match.", 400)
+    );
+  }
+
+  if (password.length < 8 || password.length > 16) {
+    return next(
+      new ErrorHandler(
+        "Password must contain between 8 and 16 characters.",
+        400
+      )
+    );
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  user.password = hashedPassword;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  await user.save();
+  sendToken(user, 200, "Password reset successfully.", res);
+});
+
+export const updatePassword = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user?._id).select("+password");
+
+  const { currentPassword, newPassword, confirmNewPassword } = req.body || {};
+  if (!currentPassword || !newPassword || !confirmNewPassword) {
+    return next(new ErrorHandler("Please enter all fields.", 400));
+  }
+
+  const isPasswordMatched = await bcrypt.compare(
+    currentPassword,
+    user.password
+  );
+  if (!isPasswordMatched) {
+    return next(new ErrorHandler("Current password is incorrect.", 400));
+  }
+
+  if (
+    currentPassword.length < 8 ||
+    currentPassword.length > 16 ||
+    newPassword.length < 8 ||
+    newPassword.length > 16 ||
+    confirmNewPassword.length < 8 ||
+    confirmNewPassword.length > 16
+  ) {
+    return next(
+      new ErrorHandler(
+        "All passwords must contain between 8 and 16 characters.",
+        400
+      )
+    );
+  }
+
+  if (newPassword !== confirmNewPassword) {
+    return next(
+      new ErrorHandler("New password and confirm password do not match.", 400)
+    );
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  user.password = hashedPassword;
+  await user.save();
+  res.status(200).json({
+    success: true,
+    message: "Password updated",
+  });
+});

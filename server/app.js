@@ -5,6 +5,13 @@ import cors from "cors";
 import { connectDB } from "./database/db.js";
 import { errorMiddleware } from "./middlewares/errorMiddlewares.js";
 import authRouter from "./routes/authRouter.js";
+import bookRouter from "./routes/bookRouter.js";
+import borrowRouter from "./routes/borrowRouter.js";
+import userRouter from "./routes/userRouter.js";
+import fileUpload from "express-fileupload";
+import os from "os";
+import { notifyUsers } from "./services/notifyUsers.js";
+import { removeUnverifiedAccounts } from "./services/removeUnverifiedAccounts.js";
 
 export const app = express();
 
@@ -19,7 +26,26 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: os.tmpdir(),
+    createParentPath: true,
+  })
+);
 app.use("/api/v1/auth", authRouter);
-connectDB();
+app.use("/api/v1/book", bookRouter);
+app.use("/api/v1/borrow", borrowRouter);
+app.use("/api/v1/user", userRouter);
+
+// Start DB connection and then start scheduled jobs that rely on the DB
+connectDB()
+  .then(() => {
+    notifyUsers();
+    removeUnverifiedAccounts();
+  })
+  .catch((err) => {
+    console.error("Failed to connect to DB, scheduled jobs not started.", err);
+  });
 
 app.use(errorMiddleware);

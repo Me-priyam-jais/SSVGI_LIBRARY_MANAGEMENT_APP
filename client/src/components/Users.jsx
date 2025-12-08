@@ -29,7 +29,7 @@ const Users = () => {
         </header>
 
         {/* Table */}
-        {users && users.filter((u) => u.role === "User").length > 0 ? (
+        {user && user.filter((u) => u.role === "User").length > 0 ? (
           <div className="mt-6 overflow-auto bg-white rounded-md shadow-lg">
             <table className="min-w-full border-collapse">
               <thead>

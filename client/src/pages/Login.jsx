@@ -23,10 +23,10 @@ const Login = () => {
   };
 
   useEffect(() => {
-    // if (message) {
-    //   toast.success(message);
-    //   dispatch(resetAuthSlice);
-    // }
+    if (message) {
+      toast.success(message);
+      dispatch(resetAuthSlice);
+    }
     if (error) {
       toast.error(error);
       dispatch(resetAuthSlice());

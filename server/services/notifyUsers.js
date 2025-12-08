@@ -5,7 +5,6 @@ import { sendEmail } from "../utils/sendEmail.js";
 
 export const notifyUsers = () => {
   cron.schedule("*/30 * * * *", async () => {
-    console.log("notifyUsers job running...");
     try {
       const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
       const borrowers = await Borrow.find({

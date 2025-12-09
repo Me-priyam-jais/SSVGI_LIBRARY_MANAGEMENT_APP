@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import settingIcon from "../assets/setting.png";
 import userIcon from "../assets/user.png";
 import { useDispatch, useSelector } from "react-redux";
+import { current } from "@reduxjs/toolkit";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -17,10 +18,10 @@ const Header = () => {
       const hours = now.getHours() % 12 || 12;
       const minutes = now.getMinutes().toString().padStart(2, "0");
       const ampm = now.getHours() >= 12 ? "PM" : "AM";
-      setCurrentTime("${hours}:${minutes}:${ampm}");
+      setCurrentTime(`${hours}:${minutes}:${ampm}`);
 
       const options = { month: "short", date: "numeric", year: "numeric" };
-      setCurrentTime(now.toLocaleDateString("en-US", options));
+      setCurrentDate(now.toLocaleDateString("en-US", options));
     };
     updateDateTime();
 
@@ -28,17 +29,18 @@ const Header = () => {
 
     return () => clearInterval(intervalId);
   }, []);
+
   return (
     <>
       <header className="absolute top-0 bg-white w-full py-4 px-6 left-0 shadow-md flex justify-between items-center">
         {/* LEFT SIDE */}
         <div className="flex items-center gap-2">
           <img src={userIcon} alt="userIcon" className="w-8 h-8" />
-          <div className="text-sm font-medium sm:text-lg lg:text-xl sm:font-semibold">
+          <div className="flex flex-col">
             <span className="text-sm font-medium sm:text-lg sm:font-semibold">
               {user && user.name}
             </span>
-            <span className="text-sm font-medium sm:text-lg sm:font-semibold">
+            <span className="text-sm font-medium sm:font-semibold">
               {user && user.role}
             </span>
           </div>

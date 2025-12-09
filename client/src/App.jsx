@@ -17,9 +17,10 @@ const App = () => {
   useEffect(() => {
     dispatch(getUser());
     if (isAuthenticated && user?.role === "Admin") {
+      console.log("fjlajs");
       dispatch(fetchAllUsers());
     }
-  }, [isAuthenticated]);
+  }, []);
   return (
     <Router>
       <Routes>

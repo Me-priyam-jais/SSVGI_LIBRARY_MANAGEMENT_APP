@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Header from "../layout/Header";
 
 const Users = () => {
-  const { user } = useSelector((state) => state.user);
+  const { users } = useSelector((state) => state.user);
 
   const formatDate = (timeStamp) => {
     const date = new Date(timeStamp);
@@ -13,7 +13,7 @@ const Users = () => {
     const formattedTime = `${String(date.getHours()).padStart(2, "0")}:${String(
       date.getMinutes()
     ).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
-    const result = "${formattedDate} ${formattedTime}";
+    const result = `${formattedDate} ${formattedTime}`;
     return result;
   };
 
@@ -29,21 +29,21 @@ const Users = () => {
         </header>
 
         {/* Table */}
-        {user && user.filter((u) => u.role === "User").length > 0 ? (
+        {users && users.filter((u) => u.role === "User").length > 0 ? (
           <div className="mt-6 overflow-auto bg-white rounded-md shadow-lg">
             <table className="min-w-full border-collapse">
               <thead>
                 <tr className="bg-gray-200">
                   <th className="px-4 py-2 text-left">ID</th>
-                  <th className="px-4 py-2 text-left">Name</th>
+                  {/* <th className="px-4 py-2 text-left">Name</th>
                   <th className="px-4 py-2 text-left">Email</th>
-                  <th className="px-4 py-2 text-left">Role</th>
+                  <th className="px-4 py-2 text-left">Role</th> */}
                 </tr>
               </thead>
             </table>
           </div>
         ) : (
-          <></>
+          ""
         )}
       </main>
     </>

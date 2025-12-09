@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/black-logo.png";
 import logo_with_title from "../assets/logo-with-title.png";
-import { Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { otpVerification, resetAuthSlice } from "../store/slices/authSlice";
 import { toast } from "react-toastify";
 
 const OTP = () => {
-  const { email } = UseParams();
-  const { otp, setOtp } = useState("");
+  const { email } = useParams();
+  const [otp, setOtp] = useState("");
   const dispatch = useDispatch();
 
   const { loading, error, message, user, isAuthenticated } = useSelector(
@@ -21,9 +21,10 @@ const OTP = () => {
   };
 
   useEffect(() => {
-    // if (message) {
-    //   toast.success(message);
-    // }
+    if (message) {
+      toast.success(message);
+      dispatch(resetAuthSlice());
+    }
     if (error) {
       toast.error(error);
       dispatch(resetAuthSlice());

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { act } from "react";
+// import { act } from "react";
 
 const authSlice = createSlice({
   name: "auth",
@@ -158,7 +158,7 @@ export const register = (data) => async (dispatch) => {
       dispatch(authSlice.actions.registerSuccess(res.data));
     })
     .catch((error) => {
-      dispatch(authSlice.registerFailed(error.response.data.message));
+      dispatch(authSlice.actions.registerFailed(error.response.data.message));
     });
 };
 
@@ -179,7 +179,9 @@ export const otpVerification = (email, otp) => async (dispatch) => {
       dispatch(authSlice.actions.otpVerificationSuccess(res.data));
     })
     .catch((error) => {
-      dispatch(authSlice.otpVerificationFailed(error.response.data.message));
+      dispatch(
+        authSlice.actions.otpVerificationFailed(error.response.data.message)
+      );
     });
 };
 
@@ -196,7 +198,7 @@ export const login = (data) => async (dispatch) => {
       dispatch(authSlice.actions.loginSuccess(res.data));
     })
     .catch((error) => {
-      dispatch(authSlice.loginFailed(error.response.data.message));
+      dispatch(authSlice.actions.loginFailed(error.response.data.message));
     });
 };
 
@@ -211,7 +213,7 @@ export const logout = () => async (dispatch) => {
       dispatch(authSlice.actions.resetAuthSlice());
     })
     .catch((error) => {
-      dispatch(authSlice.logoutFailed(error.response.data.message));
+      dispatch(authSlice.actions.logoutFailed(error.response.data.message));
     });
 };
 
@@ -225,7 +227,7 @@ export const getUser = () => async (dispatch) => {
       dispatch(authSlice.actions.getUserSuccess(res.data));
     })
     .catch((error) => {
-      dispatch(authSlice.getUserFailed(error.response.data.message));
+      dispatch(authSlice.actions.getUserFailed(error.response.data.message));
     });
 };
 
@@ -246,14 +248,16 @@ export const forgotPassword = (email) => async (dispatch) => {
       dispatch(authSlice.actions.forgotPasswordSuccess(res.data));
     })
     .catch((error) => {
-      dispatch(authSlice.forgotPasswordFailed(error.response.data.message));
+      dispatch(
+        authSlice.actions.forgotPasswordFailed(error.response.data.message)
+      );
     });
 };
 
 export const resetPassword = (data, token) => async (dispatch) => {
   dispatch(authSlice.actions.resetPasswordRequest());
   await axios
-    .put("http://localhost:4000/api/v1/auth/password/reset/${token}", data, {
+    .put(`http://localhost:4000/api/v1/auth/password/reset/${token}`, data, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -263,7 +267,9 @@ export const resetPassword = (data, token) => async (dispatch) => {
       dispatch(authSlice.actions.resetPasswordSuccess(res.data));
     })
     .catch((error) => {
-      dispatch(authSlice.resetPasswordFailed(error.response.data.message));
+      dispatch(
+        authSlice.actions.resetPasswordFailed(error.response.data.message)
+      );
     });
 };
 
@@ -280,7 +286,9 @@ export const updatePassword = (data) => async (dispatch) => {
       dispatch(authSlice.actions.updatePasswordSuccess(res.data.message));
     })
     .catch((error) => {
-      dispatch(authSlice.updatePasswordFailed(error.response.data.message));
+      dispatch(
+        authSlice.actions.updatePasswordFailed(error.response.data.message)
+      );
     });
 };
 

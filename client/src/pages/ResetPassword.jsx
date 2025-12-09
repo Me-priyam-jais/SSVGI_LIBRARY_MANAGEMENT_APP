@@ -4,7 +4,7 @@ import logo from "../assets/black-logo.png";
 import logo_with_title from "../assets/logo-with-title.png";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { resetAuthSlice } from "../store/slices/authSlice";
+import { resetAuthSlice, resetPassword } from "../store/slices/authSlice";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -29,6 +29,7 @@ const ResetPassword = () => {
   useEffect(() => {
     if (message) {
       toast.success(message);
+      dispatch(resetAuthSlice());
     }
     if (error) {
       toast.error(error);

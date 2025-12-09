@@ -4,6 +4,7 @@ import logo_with_title from "../assets/logo-with-title.png";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Link, Navigate } from "react-router-dom";
+import { login, resetAuthSlice } from "../store/slices/authSlice.js";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +26,7 @@ const Login = () => {
   useEffect(() => {
     if (message) {
       toast.success(message);
-      dispatch(resetAuthSlice);
+      dispatch(resetAuthSlice());
     }
     if (error) {
       toast.error(error);

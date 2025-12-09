@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import logo from "../assets/black-logo.png";
 import logo_with_title from "../assets/logo-with-title.png";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { resetAuthSlice } from "../store/slices/authSlice";
 import { Link } from "react-router-dom";
+import { register } from "../store/slices/authSlice.js";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -32,8 +33,8 @@ const Register = () => {
   useEffect(() => {
     if (message) {
       toast.success(message);
-      dispatch(resetAuthSlice);
-      navigateTo("/otp-verification/${email}");
+      dispatch(resetAuthSlice());
+      navigateTo(`/otp-verification/${email}`);
     }
     if (error) {
       toast.error(error);

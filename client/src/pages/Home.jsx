@@ -34,7 +34,6 @@ const Home = () => {
           setIsSideBarOpen={setIsSideBarOpen}
           setSelectedComponent={setSelectedComponent}
         />
-        /
         {(() => {
           switch (selectedComponent) {
             case "Dashboard":
@@ -51,10 +50,12 @@ const Home = () => {
               if (user.role === "Admin") {
                 return <Catalog />;
               }
+              break;
             case "Users":
               if (user.role === "Admin") {
-                return <Admin />;
+                return <Users />;
               }
+              break;
             case "My Borrowed Books":
               return <MyBorrowedBooks />;
               break;

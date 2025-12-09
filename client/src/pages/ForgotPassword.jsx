@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { forgotPassword, resetAuthSlice } from "../store/slices/authSlice";
 import { toast } from "react-toastify";
 import { Link, Navigate } from "react-router-dom";
+import { createSerializableStateInvariantMiddleware } from "@reduxjs/toolkit";
 
 const ForgotPassword = () => {
-  const { email } = useState();
+  const [email, setEmail] = useState("");
 
   const dispatch = useDispatch();
 
@@ -23,7 +24,7 @@ const ForgotPassword = () => {
   useEffect(() => {
     if (message) {
       toast.success(message);
-      dispatch(resetAuthSlice);
+      dispatch(resetAuthSlice());
     }
     if (error) {
       toast.error(error);
@@ -40,7 +41,7 @@ const ForgotPassword = () => {
       <div className="flex flex-col justify-center md:flex-row h-screen">
         {/* LEFT SECTION */}
         <div className="hidden w-full md:w-1/2 bg-black text-white md:flex flex-col items-center justify-center p-8 rounded-tr-[80px] rounded-br-[80px]">
-          <div className="text-center h-[450x]">
+          <div className="text-center h-[450px]">
             <div className="flex justify-center mb-12">
               <img
                 src={logo_with_title}
@@ -79,9 +80,7 @@ const ForgotPassword = () => {
                   type="email"
                   required
                   value={email}
-                  onChange={(e) =>
-                    createSerializableStateInvariantMiddleware(e.target.value)
-                  }
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
                   className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
                 />

@@ -20,7 +20,7 @@ const App = () => {
       console.log("fjlajs");
       dispatch(fetchAllUsers());
     }
-  }, []);
+  }, [isAuthenticated]);
   return (
     <Router>
       <Routes>

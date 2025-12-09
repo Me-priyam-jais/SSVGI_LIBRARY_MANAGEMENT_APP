@@ -35,9 +35,10 @@ const Users = () => {
               <thead>
                 <tr className="bg-gray-200">
                   <th className="px-4 py-2 text-left">ID</th>
-                  {/* <th className="px-4 py-2 text-left">Name</th>
+                  <th className="px-4 py-2 text-left">Name</th>
                   <th className="px-4 py-2 text-left">Email</th>
-                  <th className="px-4 py-2 text-left">Role</th> */}
+                  <th className="px-4 py-2 text-left">No. of Books Borrowed</th>
+                  <th className="px-4 py-2 text-left">Role</th>
                 </tr>
               </thead>
             </table>

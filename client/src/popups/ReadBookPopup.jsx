@@ -1,7 +1,50 @@
 import React from "react";
+import { toggleReadBookPopup } from "../store/slices/popUpSlice";
+import { useDispatch } from "react-redux";
 
 const ReadBookPopup = ({ book }) => {
-  return <div></div>;
+  const dispatch = useDispatch();
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 p-5 flex items-center justify-center z-50">
+      <div className="w-full bg-white rounded-lg shadow-lg sm:w-auto lg:w-1/3">
+        <div className="flex justify-between items-center bg-black text-white px-6 py-4 rounded-t-lg">
+          <h2 className="text-white text-lg font-bold">View Book Info</h2>
+          <button
+            className="text-white text-lg font-bold"
+            onClick={() => {
+              dispatch(toggleReadBookPopup());
+            }}
+          >
+            &times;
+          </button>
+        </div>
+        <div className="p-6 ">
+          <div className="mb-4">
+            <label className="block text-gray-700 font-semibold">
+              Book Title
+            </label>
+            <p className="border border-gray-300 rounded-lg px-4 py-2 br-gray-100">
+              {book && book.title}
+            </p>
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-semibold">Author</label>
+            <p className="border border-gray-300 rounded-lg px-4 py-2 br-gray-100">
+              {book && book.author}
+            </p>
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-semibold">
+              Description
+            </label>
+            <p className="border border-gray-300 rounded-lg px-4 py-2 br-gray-100">
+              {book && book.description}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ReadBookPopup;

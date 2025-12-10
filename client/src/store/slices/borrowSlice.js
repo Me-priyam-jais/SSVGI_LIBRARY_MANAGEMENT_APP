@@ -91,7 +91,7 @@ export const fetchUserBorrowedBooks = () => async (dispatch) => {
     .catch((err) => {
       dispatch(
         borrowSlice.actions.fetchUserBorrowedBooksFailed(
-          err.response.date.message
+          err.response?.data?.message || "Failed to fetch borrowed books"
         )
       );
     });
@@ -111,7 +111,7 @@ export const fetchAllBorrowedBooks = () => async (dispatch) => {
     .catch((err) => {
       dispatch(
         borrowSlice.actions.fetchAllBorrowedBooksFailed(
-          err.response.date.message
+          err.response?.data?.message || "Failed to fetch borrowed books"
         )
       );
     });
@@ -121,7 +121,7 @@ export const recordBorrowBook = (email, id) => async (dispatch) => {
   dispatch(borrowSlice.actions.recordBookRequest());
   await axios
     .post(
-      `http://localhost:4000/api/v1/borrow/return-borrowed-book/${id}`,
+      `http://localhost:4000/api/v1/borrow/record-borrow-book/${id}`,
       { email },
       {
         withCredentials: true,
@@ -134,7 +134,11 @@ export const recordBorrowBook = (email, id) => async (dispatch) => {
       dispatch(borrowSlice.actions.recordBookSuccess(res.data.message));
     })
     .catch((err) => {
-      dispatch(borrowSlice.actions.recordBookFailed(err.response.data.message));
+      dispatch(
+        borrowSlice.actions.recordBookFailed(
+          err.response?.data?.message || "Failed to record book"
+        )
+      );
     });
 };
 
@@ -155,7 +159,11 @@ export const returnBook = (id, email) => async (dispatch) => {
       dispatch(borrowSlice.actions.returnBookSuccess(res.data.message));
     })
     .catch((err) => {
-      borrowSlice.actions.recordBookFailed(err.response.data.message);
+      dispatch(
+        borrowSlice.actions.returnBookFailed(
+          err.response?.data?.message || "Failed to return book"
+        )
+      );
     });
 };
 

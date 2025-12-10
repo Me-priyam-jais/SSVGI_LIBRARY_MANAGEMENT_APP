@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BookA, NotebookPen, Table, TableRowsSplit } from "lucide-react";
+import { BookA, NotebookPen } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   toggleAddBookPopup,
@@ -148,7 +148,7 @@ const BookManagement = () => {
                       <td className="px-4 py-2 flex space-x-2 my-3 justify-center ">
                         <BookA
                           onClick={() => {
-                            openReadPopup(book.id);
+                            openReadPopup(book._id);
                           }}
                         />
                         <NotebookPen

@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BookA } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleReadBookPopup } from "../store/slices/popUpSlice";
+import { fetchUserBorrowedBooks } from "../store/slices/borrowSlice";
+import Header from "../layout/Header";
 
 const MyBorrowedBooks = () => {
   const dispatch = useDispatch();
@@ -9,6 +11,10 @@ const MyBorrowedBooks = () => {
   const { userBorrowedBooks } = useSelector((state) => state.borrow);
   const { readBookPopup } = useSelector((state) => state.popup);
   const [readBook, setReadBook] = useState({});
+
+  useEffect(() => {
+    dispatch(fetchUserBorrowedBooks());
+  }, [dispatch]);
   const openReadPopup = (id) => {
     const book = books.find((book) => book._id === id);
     setReadBook(book);
@@ -26,21 +32,23 @@ const MyBorrowedBooks = () => {
     const result = `${formattedDate} ${formattedTime}`;
     return result;
   };
-  const [filter, setFilter] = useState("returned");
+  const [filter, setFilter] = useState("nonReturned");
 
+  // Borrow documents use `returnDate` (null when not returned).
   const returnedBooks = userBorrowedBooks?.filter((book) => {
-    return book.returned === true;
+    return book.returnDate != null;
   });
   const nonReturnedBooks = userBorrowedBooks?.filter((book) => {
-    return book.returned === false;
+    return book.returnDate == null;
   });
   const bookToDisplay =
     filter === "returned" ? returnedBooks : nonReturnedBooks;
   return (
     <>
       <main className="relative flex-1 p-6 pt-28">
+        <Header />
         <header className="flex flex-col gap-3 md:flex-row md:justify-between md:item-center">
-          <h2 className="text-xl font-medium md:text-2xl md:justify-between md:items-center">
+          <h2 className="text-xl font-medium md:text-2xl  md:font-semibold">
             Borrowed Books
           </h2>
         </header>
@@ -71,7 +79,53 @@ const MyBorrowedBooks = () => {
           </button>
         </header>
 
-        {bookToDisplay && bookToDisplay.length}
+        {bookToDisplay && bookToDisplay.length > 0 ? (
+          <div className="mt-6 overflow-auto bg-white rounded-md shadow-lg">
+            <table className="min-w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="px-4 py-2 text-left">ID</th>
+                  <th className="px-4 py-2 text-left">Book Title</th>
+                  <th className="px-4 py-2 text-left">Date & Time</th>
+                  <th className="px-4 py-2 text-left">Due Date</th>
+                  <th className="px-4 py-2 text-left">Returned</th>
+                  <th className="px-4 py-2 text-left">View</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bookToDisplay.map((book, index) => {
+                  return (
+                    <tr
+                      key={index}
+                      className={(index + 1) % 2 === 0 ? "bg-gray-50" : ""}
+                    >
+                      <td className="px-4 py-2">{index + 1}</td>
+                      <td className="px-4 py-2">{book.book.title}</td>
+                      <td className="px-4 py-2">
+                        {formatDate(book.borrowDate || book.createdAt)}
+                      </td>
+                      <td className="px-4 py-2">{formatDate(book.dueDate)}</td>
+                      <td className="px-4 py-2">
+                        {book.returnDate ? "Yes" : "No"}
+                      </td>
+                      <td className="px-4 py-2">
+                        <BookA
+                          onClick={() => {
+                            openReadPopup(book.book._id);
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="mt-6 p-6 text-center text-gray-600">
+            No borrowed books found
+          </div>
+        )}
       </main>
     </>
   );

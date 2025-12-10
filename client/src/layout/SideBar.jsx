@@ -16,10 +16,13 @@ import {
   toggleSettingPopup,
 } from "../store/slices/popUpSlice.js";
 import AddNewAdmin from "../popups/AddNewAdmin.jsx";
+import SettingPopup from "../popups/SettingPopup.jsx";
 
 const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
   const dispatch = useDispatch();
-  const { addNewAdminPopup } = useSelector((state) => state.popup);
+  const { addNewAdminPopup, settingPopup } = useSelector(
+    (state) => state.popup
+  );
 
   const { loading, error, message, isAuthenticated, user } = useSelector(
     (state) => state.auth
@@ -124,6 +127,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
         />
       </aside>
       {addNewAdminPopup && <AddNewAdmin />}
+      {settingPopup && <SettingPopup />}
     </>
   );
 };

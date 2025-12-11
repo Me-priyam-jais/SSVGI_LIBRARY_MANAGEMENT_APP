@@ -34,6 +34,7 @@ const SettingPopup = () => {
               <h3 className="text-xl font-bold">Add New Admin</h3>
             </div>
             <img
+              className="w-8 h-8"
               src={closeIcon}
               alt="close-icon"
               onClick={() => {

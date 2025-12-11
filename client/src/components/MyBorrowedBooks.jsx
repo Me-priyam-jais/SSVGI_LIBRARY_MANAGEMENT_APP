@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { BookA } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleReadBookPopup } from "../store/slices/popUpSlice";
+import { toggleReadBookPopup } from "../store/slices/popUpSlice.js";
 import { fetchUserBorrowedBooks } from "../store/slices/borrowSlice";
 import Header from "../layout/Header";
+import ReadBookPopup from "../popups/ReadBookPopup.jsx";
 
 const MyBorrowedBooks = () => {
   const dispatch = useDispatch();
@@ -11,16 +12,11 @@ const MyBorrowedBooks = () => {
   const { userBorrowedBooks } = useSelector((state) => state.borrow);
   const { readBookPopup } = useSelector((state) => state.popup);
   const [readBook, setReadBook] = useState({});
-
-  useEffect(() => {
-    dispatch(fetchUserBorrowedBooks());
-  }, [dispatch]);
   const openReadPopup = (id) => {
     const book = books.find((book) => book._id === id);
     setReadBook(book);
     dispatch(toggleReadBookPopup());
   };
-
   const formatDate = (timeStamp) => {
     const date = new Date(timeStamp);
     const formattedDate = `${String(date.getDate()).padStart(2, "0")}-${String(
@@ -32,21 +28,24 @@ const MyBorrowedBooks = () => {
     const result = `${formattedDate} ${formattedTime}`;
     return result;
   };
-  const [filter, setFilter] = useState("nonReturned");
+  useEffect(() => {
+    dispatch(fetchUserBorrowedBooks());
+  }, [dispatch]);
 
-  // Borrow documents use `returnDate` (null when not returned).
+  const [filter, setFilter] = useState("returned");
   const returnedBooks = userBorrowedBooks?.filter((book) => {
     return book.returnDate != null;
   });
   const nonReturnedBooks = userBorrowedBooks?.filter((book) => {
     return book.returnDate == null;
   });
-  const bookToDisplay =
+  const booksToDisplay =
     filter === "returned" ? returnedBooks : nonReturnedBooks;
   return (
     <>
       <main className="relative flex-1 p-6 pt-28">
         <Header />
+        {/* sub Header */}
         <header className="flex flex-col gap-3 md:flex-row md:justify-between md:item-center">
           <h2 className="text-xl font-medium md:text-2xl  md:font-semibold">
             Borrowed Books
@@ -79,7 +78,7 @@ const MyBorrowedBooks = () => {
           </button>
         </header>
 
-        {bookToDisplay && bookToDisplay.length > 0 ? (
+        {booksToDisplay && booksToDisplay.length > 0 ? (
           <div className="mt-6 overflow-auto bg-white rounded-md shadow-lg">
             <table className="min-w-full border-collapse">
               <thead>
@@ -93,7 +92,7 @@ const MyBorrowedBooks = () => {
                 </tr>
               </thead>
               <tbody>
-                {bookToDisplay.map((book, index) => {
+                {booksToDisplay.map((book, index) => {
                   return (
                     <tr
                       key={index}
@@ -110,6 +109,7 @@ const MyBorrowedBooks = () => {
                       </td>
                       <td className="px-4 py-2">
                         <BookA
+                          className="w-6 h-6 cursor-pointer hover:text-gray-600"
                           onClick={() => {
                             openReadPopup(book.book._id);
                           }}
@@ -121,12 +121,17 @@ const MyBorrowedBooks = () => {
               </tbody>
             </table>
           </div>
+        ) : filter === "returned" ? (
+          <h3 className="text-3xl mt-5 font-medium">
+            No returned books found !
+          </h3>
         ) : (
-          <div className="mt-6 p-6 text-center text-gray-600">
-            No borrowed books found
-          </div>
+          <h3 className="text-3xl mt-5 font-medium">
+            No non returned books found !
+          </h3>
         )}
       </main>
+      {readBookPopup && <ReadBookPopup book={readBook} />}
     </>
   );
 };

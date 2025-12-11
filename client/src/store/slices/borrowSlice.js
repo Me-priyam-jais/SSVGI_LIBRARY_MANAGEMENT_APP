@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createSlice } from "@reduxjs/toolkit";
+import { toggleRecordBookPopup } from "./popUpSlice";
 
 const borrowSlice = createSlice({
   name: "borrow",
@@ -67,9 +68,9 @@ const borrowSlice = createSlice({
       state.error = action.payload;
       state.message = null;
     },
-    resetBorrowSlice(state) {
+    resetBorrowSlice(state, action) {
       state.loading = false;
-      state.error = null;
+      state.error = action.payload;
       state.message = null;
     },
   },
@@ -91,7 +92,7 @@ export const fetchUserBorrowedBooks = () => async (dispatch) => {
     .catch((err) => {
       dispatch(
         borrowSlice.actions.fetchUserBorrowedBooksFailed(
-          err.response?.data?.message || "Failed to fetch borrowed books"
+          err.response.data.message
         )
       );
     });
@@ -132,13 +133,11 @@ export const recordBorrowBook = (email, id) => async (dispatch) => {
     )
     .then((res) => {
       dispatch(borrowSlice.actions.recordBookSuccess(res.data.message));
+      dispatch(toggleRecordBookPopup());
     })
     .catch((err) => {
-      dispatch(
-        borrowSlice.actions.recordBookFailed(
-          err.response?.data?.message || "Failed to record book"
-        )
-      );
+      dispatch(borrowSlice.actions.recordBookFailed(err.response.data.message));
+      dispatch(toggleRecordBookPopup());
     });
 };
 
@@ -159,11 +158,7 @@ export const returnBook = (id, email) => async (dispatch) => {
       dispatch(borrowSlice.actions.returnBookSuccess(res.data.message));
     })
     .catch((err) => {
-      dispatch(
-        borrowSlice.actions.returnBookFailed(
-          err.response?.data?.message || "Failed to return book"
-        )
-      );
+      dispatch(borrowSlice.actions.returnBookFailed(err.response.data.message));
     });
 };
 

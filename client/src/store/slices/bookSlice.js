@@ -1,5 +1,6 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toggleAddBookPopup } from "./popUpSlice";
 
 const bookSlice = createSlice({
   name: "book",
@@ -74,13 +75,10 @@ export const addBook = (data) => async (dispatch) => {
     })
     .then((res) => {
       dispatch(bookSlice.actions.addBookSuccess(res.data.message));
+      dispatch(toggleAddBookPopup());
     })
     .catch((err) => {
-      dispatch(
-        bookSlice.actions.addBookFailed(
-          err.response?.data?.message || "Failed to add book"
-        )
-      );
+      dispatch(bookSlice.actions.addBookFailed(err.response.data.message));
     });
 };
 

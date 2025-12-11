@@ -13,10 +13,7 @@ import {
 import { resetBookSlice, fetchAllBooks } from "../store/slices/bookSlice.js";
 import { toast } from "react-toastify";
 import Header from "../layout/Header.jsx";
-import addBookPopup from "../popups/AddBookPopup.jsx";
 import AddBookPopup from "../popups/AddBookPopup.jsx";
-import readBookPopup from "../popups/ReadBookPopup.jsx";
-import recordBookPopup from "../popups/RecordBookPopup.jsx";
 import ReadBookPopup from "../popups/ReadBookPopup.jsx";
 import RecordBookPopup from "../popups/RecordBookPopup.jsx";
 
@@ -56,8 +53,8 @@ const BookManagement = () => {
     }
     if (error || borrowSliceError) {
       toast.error(error || borrowSliceError);
-      dispatch(resetBookSlice());
       dispatch(resetBorrowSlice());
+      dispatch(resetBookSlice());
     }
   }, [
     dispatch,
@@ -72,19 +69,19 @@ const BookManagement = () => {
   const handleSearch = (e) => {
     setSearchedKeyword(e.target.value.toLowerCase());
   };
-  const searchedBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(searchedKeyword)
-  );
+  const searchedBooks = books.filter((book) => {
+    return book.title.toLowerCase().includes(searchedKeyword);
+  });
   return (
     <>
       <main className="relative flex-1 p-6 pt-28">
         <Header />
         {/* sub header */}
         <header className="flex flex-col gap-3 md:flex-row md:justify-between md:items-center">
-          <h2 className="text-xl font-medium md:text-2xl md:justify-between md:items-center">
+          <h2 className="text-xl font-medium md:text-2xl  md:font-semibold">
             {user && user.role === "Admin" ? "Book Management" : "Books"}
           </h2>
-          <div className="flex flex-col lg:flex-row space-y-0 space-x-0 lg:space-x-4">
+          <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
             {isAuthenticated && user?.role === "Admin" && (
               <button
                 onClick={() => {
@@ -103,9 +100,7 @@ const BookManagement = () => {
               placeholder="Search Books...."
               className="w-full sm:w-52 border p-2 border-gray-300 rounded-md "
               value={searchedKeyword}
-              onChange={(e) => {
-                handleSearch(e);
-              }}
+              onChange={handleSearch}
             />
           </div>
         </header>
@@ -136,7 +131,7 @@ const BookManagement = () => {
                   >
                     <td className="px-4 py-2">{index + 1}</td>
                     <td className="px-4 py-2">{book.title}</td>
-                    <td className="px-4 py-2">{book.auhtor}</td>
+                    <td className="px-4 py-2">{book.author}</td>
                     {isAuthenticated && user?.role === "Admin" && (
                       <td className="px-4 py-2 ">{book.quantity}</td>
                     )}
@@ -144,13 +139,21 @@ const BookManagement = () => {
                     <td className="px-4 py-2">
                       {book.availability ? "Available" : "Unavailable"}
                     </td>
-                    {isAuthenticated && user?.role === "Admin" && (
+                    {isAuthenticated && user.role === "Admin" && (
                       <td className="px-4 py-2 flex space-x-2 my-3 justify-center ">
                         <BookA
                           onClick={() => {
                             openReadPopup(book._id);
                           }}
                         />
+                        <button
+                          onClick={() => {
+                            console.log("clicked");
+                            openReadPopup(book.id);
+                          }}
+                        >
+                          close
+                        </button>
                         <NotebookPen
                           onClick={() => {
                             openRecordBookPopup(book._id);
@@ -171,7 +174,7 @@ const BookManagement = () => {
       </main>
       {addBookPopup && <AddBookPopup />}
       {readBookPopup && <ReadBookPopup book={readBook} />}
-      {addBookPopup && <RecordBookPopup bookId={borrowBookId} />}
+      {recordBookPopup && <RecordBookPopup bookId={borrowBookId} />}
     </>
   );
 };

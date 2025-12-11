@@ -57,10 +57,10 @@ const Users = () => {
                       <td className="px-4 py-2">{user.name}</td>
                       <td className="px-4 py-2">{user.email}</td>
                       <td className="px-4 py-2">{user.role}</td>
-                      <td className="px-4 py-2">
+                      <td className="px-4 py-2 text-center">
                         {user?.borrowedBooks.length}
                       </td>
-                      <td className="px-4 py-2">
+                      <td className="px-4 py-2 text-center">
                         {formatDate(user.createdAt)}
                       </td>
                     </tr>

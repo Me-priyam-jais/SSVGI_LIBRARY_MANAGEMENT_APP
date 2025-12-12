@@ -51,6 +51,7 @@ const AddNewAdmin = () => {
               </div>
               <img
                 src={closeIcon}
+                className="w-8 h-8"
                 alt="close-icon"
                 onClick={() => {
                   dispatch(toggleAddNewAdminPopup());

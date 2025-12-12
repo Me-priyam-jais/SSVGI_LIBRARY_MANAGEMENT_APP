@@ -31,7 +31,7 @@ const SettingPopup = () => {
                 alt="setting-icon"
                 className="bg-gray-300 p-5 rounded-lg"
               />
-              <h3 className="text-xl font-bold">Add New Admin</h3>
+              <h3 className="text-xl font-bold">Update Your Password</h3>
             </div>
             <img
               className="w-8 h-8"
@@ -85,30 +85,11 @@ const SettingPopup = () => {
                 className="w-full px-4 py-2 border border-gray-300 rouded-md "
               />
             </div>
-            {/*Buttons  */}
-            {/* <div className="flex justify-end space-x-4">
-              <button
-                type="button"
-                onClick={() => {
-                  dispatch(toggleAddNewAdminPopup());
-                }}
-                className="px-4 py-2 bg-black-200 rouded-md hover:bg-grey-300 "
-              >
-                Close
-              </button>
-              <button
-                type="submit"
-                disabled={loading}
-                className="px-4 py-2 bg-black  text-white rouded-md hover:bg-grey-800 "
-              >
-                Add
-              </button>
-            </div> */}
             <div className="flex gap-4 mt-10">
               <button
                 type="button"
                 onClick={() => {
-                  dispatch(toggleAddNewAdminPopup());
+                  dispatch(toggleSettingPopup());
                 }}
                 className="px-4 py-2 bg-black-200 rouded-md hover:bg-grey-300 "
               >

@@ -44,19 +44,19 @@ const AdminDashboard = () => {
   const [totalBooks, setTotalBooks] = useState(0);
   const [totalBorrowedBooks, setTotalBorrowedBooks] = useState(0);
   const [totalReturnedBooks, setTotalReturnedBooks] = useState(0);
-
   useEffect(() => {
     let numberOfUsers = users.filter((user) => user.role === "User");
     let numberOfAdmins = users.filter((user) => user.role === "Admin");
     setTotalUsers(numberOfUsers.length);
     setTotalAdmin(numberOfAdmins.length);
+    setTotalBooks(books.length);
 
     let numberOfTotalBorrowedBooks = allBorrowedBooks.filter(
-      (book) => book.returnedDate === null
+      (book) => book.returnDate === null
     );
 
     let numberOfTotalReturnedBooks = allBorrowedBooks.filter(
-      (book) => book.returnedDate != null
+      (book) => book.returnDate != null
     );
 
     setTotalBorrowedBooks(numberOfTotalBorrowedBooks.length);
@@ -98,11 +98,11 @@ const AdminDashboard = () => {
               <div className="flex flex-col gap-3">
                 <p className="flex items-center gap-5">
                   <span className="w-3 h-3 rounded-full bg-[#3D3E3E]"></span>
-                  <span>Total Borrowed Books</span>
+                  <span>Total Borrowed Books :{totalBorrowedBooks}</span>
                 </p>
                 <p className="flex items-center gap-5">
                   <span className="w-3 h-3 rounded-full bg-[#151619]"></span>
-                  <span>Total Returned Books</span>
+                  <span>Total Returned Books :{totalReturnedBooks}</span>
                 </p>
               </div>
             </div>

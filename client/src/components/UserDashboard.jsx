@@ -43,11 +43,11 @@ const UserDashboard = () => {
 
   useEffect(() => {
     let numberOfTotalBorrowedBooks = userBorrowedBooks.filter(
-      (book) => book.returned === false
+      (book) => book.returnDate || book.returnDate === null
     );
 
     let numberOfTotalReturnedBooks = userBorrowedBooks.filter(
-      (book) => book.returned === true
+      (book) => book.returnDate
     );
 
     setTotalBorrowedBooks(numberOfTotalBorrowedBooks.length);

@@ -146,14 +146,6 @@ const BookManagement = () => {
                             openReadPopup(book._id);
                           }}
                         />
-                        <button
-                          onClick={() => {
-                            console.log("clicked");
-                            openReadPopup(book.id);
-                          }}
-                        >
-                          close
-                        </button>
                         <NotebookPen
                           onClick={() => {
                             openRecordBookPopup(book._id);

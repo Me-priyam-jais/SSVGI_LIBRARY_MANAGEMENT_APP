@@ -107,7 +107,7 @@ const Catalog = () => {
         {booksToDisplay && booksToDisplay.length > 0 ? (
           <div className="mt-6 overflow-auto bg-white rounded-md shadow-lg">
             <table className="min-w-full border-collapse">
-              <thead>
+              <thead className="w-full">
                 <tr className="bg-gray-200">
                   <th className="px-4 py-2 text-left">ID</th>
                   <th className="px-4 py-2 text-left">Username</th>

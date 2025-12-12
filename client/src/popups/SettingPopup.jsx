@@ -31,7 +31,7 @@ const SettingPopup = () => {
                 alt="setting-icon"
                 className="bg-gray-300 p-5 rounded-lg"
               />
-              <h3 className="text-xl font-bold">Add New Admin</h3>
+              <h3 className="text-xl font-bold">Update Your Password</h3>
             </div>
             <img
               className="w-8 h-8"

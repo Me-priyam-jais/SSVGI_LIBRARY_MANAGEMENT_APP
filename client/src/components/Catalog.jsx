@@ -125,16 +125,19 @@ const Catalog = () => {
                       key={index}
                       className={(index + 1) % 2 === 0 ? "bg-gray-50" : ""}
                     >
-                      <td className="px-4 py-2">{index + 1}</td>
-                      <td className="px-4 py-2">{book?.user.name}</td>
-                      <td className="px-4 py-2">{book?.user.email}</td>
-                      <td className="px-4 py-2">{book.price}</td>
-                      <td className="px-4 py-2">{formatDate(book.dueDate)}</td>
-                      <td className="px-4 py-2">
+                      <td className="px-4 py-2 text-left">{index + 1}</td>
+                      <td className="px-4 py-2 text-left">{book?.user.name}</td>
+                      <td className="px-4 py-2 text-left">
+                        {book?.user.email}
+                      </td>
+                      <td className="px-4 py-2 text-left">{book.price}</td>
+                      <td className="px-4 py-2 text-left">
+                        {formatDate(book.dueDate)}
+                      </td>
+                      <td className="px-4 py-2 text-center">
                         {formatDateAndTime(book.createdAt)}
                       </td>
-                      <td className="px-4 py-2"></td>
-                      <td className="px-4 py-2">
+                      <td className="px-4 py-2 text-right">
                         {book.returnDate ? (
                           <FaSquareCheck className="w-6 h-6" />
                         ) : (
